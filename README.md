@@ -3,6 +3,8 @@ terminaljs
 
 terminal.js is a dead simple JavaScript library for emulating a shell environment.
 
+![terminaljs demo](assets/demo.gif)
+
 ### Initialization
 
     var myTerminal = new Terminal(id)
