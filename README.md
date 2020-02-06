@@ -1,15 +1,49 @@
-terminaljs
-==========
+# terminaljs
 
 terminal.js is a dead simple JavaScript library for emulating a shell environment.
 
 ![terminaljs demo](assets/demo.gif)
 
-### Initialization
+## Getting Started
 
-    var myTerminal = new Terminal(id)
+Getting started is super easy.
 
-### Properties and methods
+```html
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>terminal.js example</title>
+		<script src="terminal.js"></script>
+	</head>
+	<body>
+		<h1>terminal.js example</h1>
+
+		<br>
+		<br>
+
+		<script>
+			let t1 = new Terminal();
+			t1.setHeight("200px");
+			t1.setWidth('600px');
+			document.body.appendChild(t1.html);
+
+			t1.print('Hello, world!');
+
+			t1.input(function (input) {
+				t1.print("I received the following : " + input);
+			});
+		</script>
+
+	</body>
+</html>
+```
+
+## Initialization
+
+    let myTerminal = new Terminal(id)
+
+## Properties and methods
 
     .html
 This is the top DOM element of the terminal instance. If you want to modify styling via CSS, all instances belong to a .Terminal class. The element will also get the ID from the constructor argument.
