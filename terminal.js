@@ -27,16 +27,9 @@ let Terminal = (function () {
 		terminalObj._inputLine.textContent = '';
 		terminalObj._input.style.display = 'block';
 		terminalObj.html.appendChild(inputField);
+
 		fireCursorInterval(inputField, terminalObj);
-
-		inputField.onblur = function () {
-			terminalObj._cursor.style.display = 'none'
-		};
-
-		inputField.onfocus = function () {
-			inputField.value = terminalObj._inputLine.textContent;
-			terminalObj._cursor.style.display = 'inline'
-		};
+		terminalObj._cursor.style.display = 'inline';
 
 		terminalObj.html.onclick = function () {
 			inputField.focus()
@@ -57,7 +50,7 @@ let Terminal = (function () {
 				terminalObj._inputLine.textContent = '';
 				inputField.value = '';
 
-				terminalObj.print(inputValue);
+				terminalObj.printInput(inputValue);
 				callback(inputValue)
 			}
 		};
@@ -77,17 +70,32 @@ let Terminal = (function () {
 
 		this._innerWindow = document.createElement('div');
 		this._output = document.createElement('p');
+		this._inputLinePre = document.createElement('span');
 		this._inputLine = document.createElement('span'); //the span element where the users input is put
 		this._cursor = document.createElement('span');
 		this._input = document.createElement('p'); //the full element administering the user input, including cursor
 
 		this._shouldBlinkCursor = true;
 
-		this.print = function (message) {
+		this.print = function (message, output = false) {
 			let newLine = document.createElement('div');
 			newLine.textContent = message;
+
+			if (output === true) {
+				newLine.appendChild(document.createElement('br'));
+				newLine.appendChild(document.createElement('br'));
+			}
+
 			this._output.appendChild(newLine);
 			this.html.scrollTop = this.html.scrollHeight;
+		};
+
+		this.printInput = function (message) {
+			this.print(this._preCursor + message)
+		};
+
+		this.printOutput = function (message) {
+			this.print(message, true)
 		};
 
 		this.input = function(callback) {
@@ -124,11 +132,16 @@ let Terminal = (function () {
 			this.html.style.height = height
 		};
 
+		this.setPreCursor = function (precursor) {
+			this._preCursor = precursor
+        };
+
 		this.blinkingCursor = function (bool) {
 			bool = bool.toString().toUpperCase();
 			this._shouldBlinkCursor = (bool === 'TRUE' || bool === '1' || bool === 'YES')
 		};
 
+		this._input.appendChild(this._inputLinePre);
 		this._input.appendChild(this._inputLine);
 		this._input.appendChild(this._cursor);
 		this._innerWindow.appendChild(this._output);
@@ -152,5 +165,7 @@ let Terminal = (function () {
 		this._cursor.innerHTML = 'C'; //put something in the cursor..
 		this._cursor.style.display = 'none'; //then hide it
 		this._input.style.display = 'none';
+        this._preCursor = '$ ';
+		this._inputLinePre.textContent = this._preCursor;
 	};
 }());
