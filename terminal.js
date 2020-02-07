@@ -2,16 +2,16 @@
 
 let Terminal = (function () {
 	let triggerCursor = function (inputField, terminal, blinkRate = 500) {
-        setTimeout(function () {
-            if (terminal._shouldBlinkCursor) {
-                terminal._cursor.style.visibility = terminal._cursor.style.visibility === 'visible' ? 'hidden' : 'visible';
-            } else {
-                terminal._cursor.style.visibility = 'visible';
-            }
+		setTimeout(function () {
+			if (terminal._shouldBlinkCursor) {
+				terminal._cursor.style.visibility = terminal._cursor.style.visibility === 'visible' ? 'hidden' : 'visible';
+			} else {
+				terminal._cursor.style.visibility = 'visible';
+			}
 
-            triggerCursor(inputField, terminal, blinkRate)
-        }, blinkRate);
-    };
+			triggerCursor(inputField, terminal, blinkRate)
+		}, blinkRate);
+	};
 
 	function initInput(terminal, callback) {
 		let inputField = document.createElement('input');
@@ -99,7 +99,7 @@ let Terminal = (function () {
 
 		this.setBackgroundColor = function (col) {
 			this.html.style.background = col;
-            this._cursor.style.color = col;
+			this._cursor.style.color = col;
 		};
 
 		this.setWidth = function (width) {
@@ -112,11 +112,11 @@ let Terminal = (function () {
 
 		this.setPreCursor = function (precursor) {
 			this._preCursor = precursor
-        };
+		};
 
 		this.setCursorBlinkRate = function (blinkRate) {
 			this._cursorBlinkRate = blinkRate
-        };
+		};
 
 		this.blinkingCursor = function (bool) {
 			bool = bool.toString().toUpperCase();
@@ -147,7 +147,7 @@ let Terminal = (function () {
 		this._cursor.innerHTML = 'C'; //put something in the cursor..
 		this._cursor.style.display = 'none'; //then hide it
 		this._input.style.display = 'none';
-        this._preCursor = '$ ';
+		this._preCursor = '$ ';
 		this._inputLinePre.textContent = this._preCursor;
 		this._cursorBlinkRate = 500;
 	};
