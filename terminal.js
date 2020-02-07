@@ -87,10 +87,6 @@ let Terminal = (function () {
 			this._output.innerHTML = ''
 		};
 
-		this.sleep = function (milliseconds, callback) {
-			setTimeout(callback, milliseconds)
-		};
-
 		this.setTextSize = function (size) {
 			this._output.style.fontSize = size;
 			this._input.style.fontSize = size

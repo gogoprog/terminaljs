@@ -59,9 +59,6 @@ Prints shows a prompt where the user can write. When the user presses enter, the
 	.clear()
 Clears the screen.
 
-	.sleep(milliseconds, callback)
-Works exactly like the JavaScript "setTimeout" function. Waits for the number of milliseconds given, then executes the callback.
-
 	.setTextSize()
 	.setTextColor()
 	.setBackgroundColor()
