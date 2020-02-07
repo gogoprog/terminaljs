@@ -13,7 +13,6 @@ let Terminal = (function () {
 		}, 500)
 	};
 
-	let firstPrompt = true;
 	function promptInput(terminalObj, callback) {
 		let inputField = document.createElement('input');
 
@@ -54,13 +53,6 @@ let Terminal = (function () {
 				callback(inputValue)
 			}
 		};
-
-		if (firstPrompt) {
-			firstPrompt = false;
-			setTimeout(function () { inputField.focus()	}, 50)
-		} else {
-			inputField.focus()
-		}
 	}
 
 	return function (id) {
