@@ -1,6 +1,6 @@
 # terminaljs
 
-terminal.js is a dead simple JavaScript library for emulating a shell environment.
+terminal.js is a dead simple JavaScript library for emulating / simulating a shell environment.
 
 ![terminaljs demo](assets/demo.gif)
 

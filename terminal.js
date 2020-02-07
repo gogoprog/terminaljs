@@ -1,19 +1,19 @@
-/*! terminal.js v2.0 | (c) 2014 Erik Österberg | https://github.com/eosterberg/terminaljs */
+/*! terminal.js v3.0 | (c) 2020 Samuel Hawksby-Robinson | https://github.com/Samyoul/terminaljs */
 
 let Terminal = (function () {
-	let fireCursorInterval = function (inputField, terminalObj) {
-		let cursor = terminalObj._cursor;
-		setTimeout(function () {
-			if (inputField.parentElement && terminalObj._shouldBlinkCursor) {
-				cursor.style.visibility = cursor.style.visibility === 'visible' ? 'hidden' : 'visible';
-				fireCursorInterval(inputField, terminalObj)
-			} else {
-				cursor.style.visibility = 'visible'
-			}
-		}, 500)
-	};
+	let triggerCursor = function (inputField, terminal, blinkRate = 500) {
+        setTimeout(function () {
+            if (terminal._shouldBlinkCursor) {
+                terminal._cursor.style.visibility = terminal._cursor.style.visibility === 'visible' ? 'hidden' : 'visible';
+            } else {
+                terminal._cursor.style.visibility = 'visible';
+            }
 
-	function promptInput(terminalObj, callback) {
+            triggerCursor(inputField, terminal, blinkRate)
+        }, blinkRate);
+    };
+
+	function initInput(terminal, callback) {
 		let inputField = document.createElement('input');
 
 		inputField.style.position = 'absolute';
@@ -23,14 +23,14 @@ let Terminal = (function () {
 		inputField.style.opacity = '0';
 		inputField.style.fontSize = '0.2em';
 
-		terminalObj._inputLine.textContent = '';
-		terminalObj._input.style.display = 'block';
-		terminalObj.html.appendChild(inputField);
+		terminal._inputLine.textContent = '';
+		terminal._input.style.display = 'block';
+		terminal.html.appendChild(inputField);
 
-		fireCursorInterval(inputField, terminalObj);
-		terminalObj._cursor.style.display = 'inline';
+		triggerCursor(inputField, terminal, terminal._cursorBlinkRate);
+		terminal._cursor.style.display = 'inline';
 
-		terminalObj.html.onclick = function () {
+		terminal.html.onclick = function () {
 			inputField.focus()
 		};
 
@@ -39,17 +39,17 @@ let Terminal = (function () {
 				e.preventDefault()
 			} else if (e.key !== "Enter") {
 				setTimeout(function () {
-					terminalObj._inputLine.textContent = inputField.value
+					terminal._inputLine.textContent = inputField.value
 				}, 1)
 			}
 		};
 		inputField.onkeyup = function (e) {
 			if (e.key === "Enter") {
 				let inputValue = inputField.value;
-				terminalObj._inputLine.textContent = '';
+				terminal._inputLine.textContent = '';
 				inputField.value = '';
 
-				terminalObj.print(terminalObj._preCursor + inputValue);
+				terminal.print(terminal._preCursor + inputValue);
 				callback(inputValue)
 			}
 		};
@@ -63,9 +63,9 @@ let Terminal = (function () {
 		this._innerWindow = document.createElement('div');
 		this._output = document.createElement('p');
 		this._inputLinePre = document.createElement('span');
-		this._inputLine = document.createElement('span'); //the span element where the users input is put
+		this._inputLine = document.createElement('span'); // the span element where the users input is put
 		this._cursor = document.createElement('span');
-		this._input = document.createElement('p'); //the full element administering the user input, including cursor
+		this._input = document.createElement('p'); // the full element administering the user input, including cursor
 
 		this._shouldBlinkCursor = true;
 
@@ -80,7 +80,7 @@ let Terminal = (function () {
 		};
 
 		this.input = function(callback) {
-			promptInput(this, callback)
+			initInput(this, callback)
 		};
 
 		this.clear = function () {
@@ -99,6 +99,7 @@ let Terminal = (function () {
 
 		this.setBackgroundColor = function (col) {
 			this.html.style.background = col;
+            this._cursor.style.color = col;
 		};
 
 		this.setWidth = function (width) {
@@ -111,6 +112,10 @@ let Terminal = (function () {
 
 		this.setPreCursor = function (precursor) {
 			this._preCursor = precursor
+        };
+
+		this.setCursorBlinkRate = function (blinkRate) {
+			this._cursorBlinkRate = blinkRate
         };
 
 		this.blinkingCursor = function (bool) {
@@ -144,5 +149,6 @@ let Terminal = (function () {
 		this._input.style.display = 'none';
         this._preCursor = '$ ';
 		this._inputLinePre.textContent = this._preCursor;
+		this._cursorBlinkRate = 500;
 	};
 }());
