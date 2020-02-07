@@ -23,15 +23,17 @@ Getting started is super easy.
 		<br>
 
 		<script>
-			let t1 = new Terminal();
-			t1.setHeight("200px");
-			t1.setWidth('600px');
-			document.body.appendChild(t1.html);
+			let t = new Terminal();
+			t.setHeight("200px");
+			t.setWidth('600px');
+			document.body.appendChild(t.html);
 
-			t1.print('Hello, world!');
+			t.print('Hello, world!');
 
-			t1.input(function (input) {
-				t1.print("I received the following : " + input);
+			t.input(function (input) {
+				if (input !== "") {
+					t.print("I received the following : " + input);
+				}
 			});
 		</script>
 
@@ -41,31 +43,31 @@ Getting started is super easy.
 
 ## Initialization
 
-    let myTerminal = new Terminal(id)
+	let myTerminal = new Terminal(id)
 
 ## Properties and methods
 
-    .html
+	.html
 This is the top DOM element of the terminal instance. If you want to modify styling via CSS, all instances belong to a .Terminal class. The element will also get the ID from the constructor argument.
 
-    .print(message)
+	.print(message)
 Prints the message on a new line.
 
-    .input(callback)
+	.input(callback)
 Prints shows a prompt where the user can write. When the user presses enter, the callback function fires. The callback takes one argument, which is the user input.
 
-    .clear()
+	.clear()
 Clears the screen.
 
-    .sleep(milliseconds, callback)
+	.sleep(milliseconds, callback)
 Works exactly like the JavaScript "setTimeout" function. Waits for the number of milliseconds given, then executes the callback.
 
-    .setTextSize()
-    .setTextColor()
-    .setBackgroundColor()
-    .setWidth()
-    .setHeight()
+	.setTextSize()
+	.setTextColor()
+	.setBackgroundColor()
+	.setWidth()
+	.setHeight()
 All the ".set" methods accepts any CSS-compliant value.
 
-    .blinkingCursor(boolean)
+	.blinkingCursor(boolean)
 Set to true by default.

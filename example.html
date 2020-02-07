@@ -12,16 +12,18 @@
 		<br>
 
 		<script>
-			let t1 = new Terminal();
-			t1.setHeight("200px");
-			t1.setWidth('600px');
-			document.body.appendChild(t1.html);
+			let t = new Terminal();
+			t.setHeight("200px");
+			t.setWidth('600px');
+			document.body.appendChild(t.html);
 
-			t1.print('Hello, world!');
+			t.print('Hello, world!');
 
-			t1.input(function (input) {
-				t1.print("I received the following : " + input);
-			});
+            t.input(function (input) {
+                if (input !== "") {
+                    t.print("I received the following : " + input);
+                }
+            });
 		</script>
 
 	</body>
