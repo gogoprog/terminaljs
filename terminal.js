@@ -50,7 +50,7 @@ let Terminal = (function () {
 				terminalObj._inputLine.textContent = '';
 				inputField.value = '';
 
-				terminalObj.printInput(inputValue);
+				terminalObj.print(terminalObj._preCursor + inputValue);
 				callback(inputValue)
 			}
 		};
@@ -77,25 +77,14 @@ let Terminal = (function () {
 
 		this._shouldBlinkCursor = true;
 
-		this.print = function (message, output = false) {
-			let newLine = document.createElement('div');
+		this.print = function (message) {
+			let newLine = document.createElement('pre');
+			newLine.style.margin = '0';
+			newLine.style.fontFamily = 'inherit';
+
 			newLine.textContent = message;
-
-			if (output === true) {
-				newLine.appendChild(document.createElement('br'));
-				newLine.appendChild(document.createElement('br'));
-			}
-
 			this._output.appendChild(newLine);
 			this.html.scrollTop = this.html.scrollHeight;
-		};
-
-		this.printInput = function (message) {
-			this.print(this._preCursor + message)
-		};
-
-		this.printOutput = function (message) {
-			this.print(message, true)
 		};
 
 		this.input = function(callback) {
