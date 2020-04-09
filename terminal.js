@@ -120,6 +120,7 @@ let Terminal = (function() {
 
         this.setPreCursor = function(precursor) {
             this._preCursor = precursor;
+            this._inputLinePre.textContent = this._preCursor;
         };
 
         this.setCursorBlinkRate = function(blinkRate) {
@@ -154,8 +155,7 @@ let Terminal = (function() {
         this._cursor.innerHTML = '&nbsp;';
         this._cursor.style.display = 'none';
         this._input.style.display = 'none';
-        this._preCursor = '$ ';
-        this._inputLinePre.textContent = this._preCursor;
         this._cursorBlinkRate = 500;
+        this.setPreCursor("$ ");
     };
 }());
