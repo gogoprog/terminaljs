@@ -54,6 +54,8 @@ let Terminal = (function() {
                 callback(inputValue);
             }
         };
+
+        inputField.focus();
     }
 
     return function(id) {
@@ -73,11 +75,10 @@ let Terminal = (function() {
         this._shouldBlinkCursor = true;
 
         this.print = function(message) {
-            let newLine = document.createElement('pre');
+            let newLine = document.createElement('p');
             newLine.style.margin = '0';
             newLine.style.fontFamily = 'inherit';
-
-            newLine.textContent = message;
+            newLine.innerHTML = message;
             this._output.appendChild(newLine);
             this.html.scrollTop = this.html.scrollHeight;
         };
@@ -97,7 +98,7 @@ let Terminal = (function() {
 
         this.setTextSize = function(size) {
             this._output.style.fontSize = size;
-            this._input.style.fontSize = size
+            this._input.style.fontSize = size;
         };
 
         this.setTextColor = function(col) {
@@ -120,7 +121,7 @@ let Terminal = (function() {
 
         this.setPreCursor = function(precursor) {
             this._preCursor = precursor;
-            this._inputLinePre.textContent = this._preCursor;
+            this._inputLinePre.innerHTML = this._preCursor;
         };
 
         this.setCursorBlinkRate = function(blinkRate) {

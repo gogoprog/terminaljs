@@ -17,7 +17,7 @@
     let t = new Terminal();
     t.setHeight("200px");
     t.setWidth("100%");
-    t.setPreCursor("> ");
+    t.setPreCursor('<span style="color:red;">@</span>$ ');
     document.body.appendChild(t.html);
 
     t.print('Hello, world!');
@@ -29,7 +29,7 @@
         el.style.margin = '0';
         t.append(el);
       } else if (input !== "") {
-        t.print("I received the following : " + input);
+        t.print("I received the following : <i>" + input + "</i>");
       }
     });
   </script>
