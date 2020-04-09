@@ -82,6 +82,11 @@ let Terminal = (function() {
             this.html.scrollTop = this.html.scrollHeight;
         };
 
+        this.append = function(element) {
+            this._output.appendChild(element);
+            this.html.scrollTop = this.html.scrollHeight;
+        };
+
         this.input = function(callback) {
             initInput(this, callback);
         };
