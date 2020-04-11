@@ -38,7 +38,7 @@ var terminaljs_Terminal = $hx_exports["Terminal"] = function(id) {
 	this._cursor.style.display = "none";
 	this._input.style.display = "none";
 	this._cursorBlinkRate = 500;
-	this.setPreCursor("$ ");
+	this.setPrompt("$ ");
 };
 terminaljs_Terminal.triggerCursor = function(inputField,terminal,blinkRate) {
 	window.setTimeout(function() {
@@ -50,8 +50,9 @@ terminaljs_Terminal.triggerCursor = function(inputField,terminal,blinkRate) {
 		terminaljs_Terminal.triggerCursor(inputField,terminal,blinkRate);
 	},blinkRate);
 };
-terminaljs_Terminal.initInput = function(terminal,callback) {
+terminaljs_Terminal.initInput = function(terminal) {
 	var inputField = window.document.createElement("input");
+	terminal._inputField = inputField;
 	inputField.style.position = "absolute";
 	inputField.style.zIndex = "-100";
 	inputField.style.outline = "none";
@@ -77,17 +78,20 @@ terminaljs_Terminal.initInput = function(terminal,callback) {
 	};
 	inputField.onkeyup = function(e1) {
 		if(e1.key == "Enter") {
-			var inputValue = inputField.value;
-			terminal._inputLine.textContent = "";
-			inputField.value = "";
-			terminal.print(terminal._preCursor + inputValue);
-			callback(inputValue);
+			terminal.validate();
 		}
 	};
 	inputField.focus();
 };
 terminaljs_Terminal.prototype = {
-	print: function(message) {
+	validate: function() {
+		var inputValue = this._inputField.value;
+		this._inputLine.textContent = "";
+		this._inputField.value = "";
+		this.print(this._preCursor + inputValue);
+		this._callback(inputValue);
+	}
+	,print: function(message) {
 		var newLine = window.document.createElement("p");
 		newLine.style.margin = "0";
 		newLine.style.fontFamily = "inherit";
@@ -100,7 +104,8 @@ terminaljs_Terminal.prototype = {
 		this.html.scrollTop = this.html.scrollHeight;
 	}
 	,input: function(callback) {
-		terminaljs_Terminal.initInput(this,callback);
+		this._callback = callback;
+		terminaljs_Terminal.initInput(this);
 	}
 	,clear: function() {
 		this._output.innerHTML = "";
@@ -123,14 +128,14 @@ terminaljs_Terminal.prototype = {
 	,setHeight: function(height) {
 		this.html.style.height = height;
 	}
-	,setPreCursor: function(precursor) {
-		this._preCursor = precursor;
+	,setPrompt: function(prompt) {
+		this._preCursor = prompt;
 		this._inputLinePre.innerHTML = this._preCursor;
 	}
 	,setCursorBlinkRate: function(blinkRate) {
 		this._cursorBlinkRate = blinkRate;
 	}
-	,blinkingCursor: function(value) {
+	,blinkCursor: function(value) {
 		this._shouldBlinkCursor = value;
 	}
 };

@@ -15,6 +15,8 @@ class Terminal {
     private var _shouldBlinkCursor = true;
     private var _preCursor:String = "";
     private var _cursorBlinkRate:Int = 500;
+    private var _inputField:js.html.Element;
+    private var _callback:String->Void;
 
     static private function triggerCursor(inputField:js.html.Element, terminal:Terminal, blinkRate:Int) {
         js.Browser.window.setTimeout(function() {
@@ -28,8 +30,9 @@ class Terminal {
         }, blinkRate);
     };
 
-    static private function initInput(terminal:Terminal, callback:String->Void) {
+    static private function initInput(terminal:Terminal) {
         var inputField = document.createElement('input');
+        terminal._inputField = inputField;
         inputField.style.position = 'absolute';
         inputField.style.zIndex = '-100';
         inputField.style.outline = 'none';
@@ -55,14 +58,18 @@ class Terminal {
         };
         inputField.onkeyup = function(e) {
             if(e.key == "Enter") {
-                var inputValue = untyped inputField.value;
-                terminal._inputLine.textContent = '';
-                untyped inputField.value = '';
-                terminal.print(terminal._preCursor + inputValue);
-                callback(inputValue);
+                terminal.validate();
             }
         };
         inputField.focus();
+    }
+
+    private function validate() {
+        var inputValue = untyped _inputField.value;
+        _inputLine.textContent = '';
+        untyped _inputField.value = '';
+        print(_preCursor + inputValue);
+        _callback(inputValue);
     }
 
     public function new(?id:String) {
@@ -96,7 +103,7 @@ class Terminal {
         this._cursor.style.display = 'none';
         this._input.style.display = 'none';
         this._cursorBlinkRate = 500;
-        this.setPreCursor("$ ");
+        this.setPrompt("$ ");
     }
 
 
@@ -112,38 +119,39 @@ class Terminal {
         this._output.appendChild(element);
         this.html.scrollTop = this.html.scrollHeight;
     };
-    public function input(callback) {
-        initInput(this, callback);
+    public function input(callback:String->Void) {
+        _callback = callback;
+        initInput(this);
     };
     public function clear() {
         this._output.innerHTML = '';
     };
-    public function setTextSize(size) {
+    public function setTextSize(size:String) {
         this._output.style.fontSize = size;
         this._input.style.fontSize = size;
     };
-    public function setTextColor(col) {
+    public function setTextColor(col:String) {
         this.html.style.color = col;
         this._cursor.style.background = col;
     };
-    public function setBackgroundColor(col) {
+    public function setBackgroundColor(col:String) {
         this.html.style.background = col;
         this._cursor.style.color = col;
     };
-    public function setWidth(width) {
+    public function setWidth(width:String) {
         this.html.style.width = width;
     };
-    public function setHeight(height) {
+    public function setHeight(height:String) {
         this.html.style.height = height;
     };
-    public function setPreCursor(precursor) {
-        this._preCursor = precursor;
+    public function setPrompt(prompt:String) {
+        this._preCursor = prompt;
         this._inputLinePre.innerHTML = this._preCursor;
     };
-    public function setCursorBlinkRate(blinkRate) {
+    public function setCursorBlinkRate(blinkRate:Int) {
         this._cursorBlinkRate = blinkRate;
     };
-    public function blinkingCursor(value) {
+    public function blinkCursor(value:Bool) {
         this._shouldBlinkCursor = value;
     };
 }
