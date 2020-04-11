@@ -1,0 +1,11 @@
+{
+	"name": "terminaljs",
+	"classPath": "src",
+	"url" : "https://github.com/gogoprog/haxe-terminaljs/",
+	"license": "MIT",
+	"tags": ["js", "terminaljs", "terminal", "console"],
+	"description": "Externs for terminaljs",
+	"version": "0.0.1",
+	"releasenote": "",
+	"contributors": ["gogoprog"]
+}

@@ -2,6 +2,8 @@
 
 terminal.js is a dead simple JavaScript library for emulating / simulating a shell environment.
 
+Rewritten in Haxe.
+
 ![terminaljs demo](assets/demo.gif)
 
 ## Getting Started
