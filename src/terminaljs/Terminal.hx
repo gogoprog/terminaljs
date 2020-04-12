@@ -17,6 +17,7 @@ class Terminal {
     private var _cursorBlinkRate:Int = 500;
     private var _inputField:js.html.Element;
     private var _callback:String->Void;
+    private var _keyDownCallback:Dynamic->Void;
 
     static private function triggerCursor(inputField:js.html.Element, terminal:Terminal, blinkRate:Int) {
         js.Browser.window.setTimeout(function() {
@@ -48,12 +49,16 @@ class Terminal {
             inputField.focus();
         };
         inputField.onkeydown = function(e) {
-            if(e.key == "LeftArrow" || e.key == "UpArrow" || e.key == "RightArrow" || e.key == "DownArrow" || e.key == "Tab") {
+            if(e.key == "ArrowLeft" || e.key == "ArrowUp" || e.key == "ArrowRight" || e.key == "ArrowDown" || e.key == "Tab") {
                 e.preventDefault();
+
+                if(terminal._keyDownCallback != null) {
+                    terminal._keyDownCallback(e);
+                }
             } else if(e.key != "Enter") {
                 js.Browser.window.setTimeout(function() {
                     terminal._inputLine.textContent = untyped inputField.value;
-                }, 1);
+                }, 0);
             }
         };
         inputField.onkeyup = function(e) {
@@ -114,44 +119,64 @@ class Terminal {
         newLine.innerHTML = message;
         this._output.appendChild(newLine);
         this.html.scrollTop = this.html.scrollHeight;
-    };
+    }
+
     public function append(element) {
         this._output.appendChild(element);
         this.html.scrollTop = this.html.scrollHeight;
-    };
+    }
+
     public function input(callback:String->Void) {
         _callback = callback;
         initInput(this);
-    };
+    }
+
+    public function keyDown(callback:Dynamic->Void) {
+        _keyDownCallback = callback;
+    }
+
     public function clear() {
         this._output.innerHTML = '';
-    };
+    }
+
     public function setTextSize(size:String) {
         this._output.style.fontSize = size;
         this._input.style.fontSize = size;
-    };
+    }
+
     public function setTextColor(col:String) {
         this.html.style.color = col;
         this._cursor.style.background = col;
-    };
+    }
+
     public function setBackgroundColor(col:String) {
         this.html.style.background = col;
         this._cursor.style.color = col;
-    };
+    }
+
     public function setWidth(width:String) {
         this.html.style.width = width;
-    };
+    }
+
     public function setHeight(height:String) {
         this.html.style.height = height;
-    };
+    }
+
     public function setPrompt(prompt:String) {
         this._preCursor = prompt;
         this._inputLinePre.innerHTML = this._preCursor;
-    };
+    }
+
     public function setCursorBlinkRate(blinkRate:Int) {
         this._cursorBlinkRate = blinkRate;
-    };
+    }
+
     public function blinkCursor(value:Bool) {
         this._shouldBlinkCursor = value;
-    };
+    }
+
+    public function setInput(value:String) {
+        untyped _inputField.value = value;
+        _inputLine.textContent = untyped _inputField.value;
+    }
 }
