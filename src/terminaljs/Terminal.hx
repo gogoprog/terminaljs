@@ -59,10 +59,7 @@ class Terminal {
                 js.Browser.window.setTimeout(function() {
                     terminal._inputLine.textContent = untyped inputField.value;
                 }, 0);
-            }
-        };
-        inputField.onkeyup = function(e) {
-            if(e.key == "Enter") {
+            } else {
                 terminal.validate();
             }
         };
