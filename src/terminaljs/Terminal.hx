@@ -66,7 +66,7 @@ class Terminal {
         inputField.focus();
     }
 
-    private function validate() {
+    public function validate() {
         var inputValue = untyped _inputField.value;
         _inputLine.textContent = '';
         untyped _inputField.value = '';
