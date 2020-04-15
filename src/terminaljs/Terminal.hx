@@ -115,11 +115,15 @@ class Terminal {
         newLine.style.fontFamily = 'inherit';
         newLine.innerHTML = message;
         this._output.appendChild(newLine);
-        this.html.scrollTop = this.html.scrollHeight;
+        scrollToBottom();
     }
 
     public function append(element) {
         this._output.appendChild(element);
+        scrollToBottom();
+    }
+
+    public function scrollToBottom() {
         this.html.scrollTop = this.html.scrollHeight;
     }
 
