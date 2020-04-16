@@ -58,7 +58,7 @@ class Terminal {
             } else if(e.key != "Enter") {
                 js.Browser.window.setTimeout(function() {
                     terminal._inputLine.textContent = untyped inputField.value;
-                }, 0);
+                }, 1);
             } else {
                 terminal.validate();
             }
