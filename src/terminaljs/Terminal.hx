@@ -180,4 +180,8 @@ class Terminal {
         untyped _inputField.value = value;
         _inputLine.textContent = untyped _inputField.value;
     }
+
+    public function focus() {
+        _inputField.focus();
+    }
 }
